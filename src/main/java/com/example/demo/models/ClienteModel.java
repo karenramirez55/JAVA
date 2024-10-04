@@ -8,7 +8,7 @@ public class ClienteModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long id_cliente;
 
     @Column(name = "direccion")
     private String direccion;
@@ -23,13 +23,14 @@ public class ClienteModel {
     private String email;
 
     // Getters y setters
+    
 
-    public long getId() {
-        return id;
+    public long getId_cliente() {
+        return id_cliente;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId_cliente(long id_cliente) {
+        this.id_cliente = id_cliente;
     }
 
     public String getDireccion() {

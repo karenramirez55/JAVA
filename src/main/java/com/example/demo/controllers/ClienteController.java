@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.models.ClienteModel; // Asegúrate de que esta importación sea correcta
+import com.example.demo.models.ClienteModel; 
 import com.example.demo.repository.RepositoryCliente;
+import com.example.demo.services.ClienteService;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,11 +23,16 @@ public class ClienteController {
 
     @Autowired
     private RepositoryCliente repo;
+
+    @Autowired
+    private ClienteService clienteService;
+
+    //usa dos Autowired porque usa lo de jpa y controller hace match con services
     
     //Lista de clientes
 
     @GetMapping("/clientes")
-    public List<ClienteModel> getClientes() {
+    public List<ClienteModel> getId_cliente() {
         return repo.findAll();
     }
  
@@ -59,23 +65,18 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al modificar el cliente");
     }
 
-    //Eliminar un cliente
+    //Eliminar un cliente (completo con service y controller)
     
     @DeleteMapping("eliminar/{id}")
     public ResponseEntity<String> deleteCliente(@PathVariable Long id) {
         try {
-            Optional<ClienteModel> optionalCliente = repo.findById(id);
-            if (optionalCliente.isPresent()) {
-                ClienteModel deleteClienteModel = optionalCliente.get();
-                repo.delete(deleteClienteModel);
-                return ResponseEntity.ok("Eliminado exitosamente");
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente no encontrado");
-            }
+            return clienteService.deleteCliente(id);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el cliente");
         }
     }
+    
+    
     
     
     
